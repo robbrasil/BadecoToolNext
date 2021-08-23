@@ -1,10 +1,10 @@
 import 'tailwindcss/tailwind.css'
-import { Provider } from 'next-auth/client'
+import { UserProvider } from '@auth0/nextjs-auth0';
 
-export default function App ({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
   return (
-    <Provider session={pageProps.session}>
+    <UserProvider>
       <Component {...pageProps} />
-    </Provider>
-  )
+    </UserProvider>
+  );
 }
