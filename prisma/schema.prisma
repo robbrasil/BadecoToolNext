@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model companies {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String
+  logo       String?
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model entries {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int
+  edit_id    Int?
+  jobNumber  String
+  community  String
+  lotNumber  String
+  jobSize    String
+  installer  String
+  date       DateTime  @db.Date
+  notes      String?   @db.Text
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement()) @db.UnsignedInt
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model password_resets {
+  email      String
+  token      String
+  created_at DateTime? @db.Timestamp(0)
+
+  @@index([email], name: "password_resets_email_index")
+  @@ignore
+}
+
+model users {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  company_id     Int?
+  name           String
+  email          String    @unique
+  password       String
+  account_type   String    @default("subscriber")
+  profile_photo  String?
+  remember_token String?   @db.VarChar(100)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+}
