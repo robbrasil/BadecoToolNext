@@ -15,15 +15,17 @@
     "net": "^1.0.2",
     "next": "latest",
     "react": "^17.0.2",
+    "react-data-table-component": "^6.11.8",
     "react-dom": "^17.0.2",
     "serverless-mysql": "^1.5.4",
+    "styled-components": "^5.3.1",
     "tls": "^0.0.1",
     "typescript": "^4.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
-    "prisma": "^2.29.1",
+    "prisma": "^2.30.0",
     "tailwindcss": "^2.2.4"
   }
 }
