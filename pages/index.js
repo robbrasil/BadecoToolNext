@@ -1,19 +1,17 @@
-import { useUser } from '@auth0/nextjs-auth0';
+import {
+  useSession, signIn, signOut
+} from 'next-auth/client'
 
-export default function Index() {
-  const { user, error, isLoading } = useUser();
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
-  console.log("user: ", user)
-
-  if (user) {
-    return (
-      <div>
-        Welcome {user.name}! <a href="/api/auth/logout">Logout</a>
-      </div>
-    );
+export default function Component() {
+  const [ session, loading ] = useSession()
+  if(session) {
+    return <>
+      Signed in as {session.user.email} <br/>
+      <button onClick={() => signOut()}>Sign out</button>
+    </>
   }
-
-  return <a href="/api/auth/login">Login</a>;
+  return <>
+    Not signed in <br/>
+    <button onClick={() => signIn()}>Sign in</button>
+  </>
 }
