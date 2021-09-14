@@ -6,10 +6,13 @@ export default async function handle(req, res) {
   // console.log(router);
   const { userid } = req.query;
 
-  const posts = await prisma.entries.findMany({
+  const getUser = await prisma.users.findUnique({
     where: {
-        user_id: parseInt(userid),
+      id: parseInt(userid),
+    },
+    include: {
+      profile: true,
     },
   })
-  res.json(posts)
+  res.json(getUser)
 }

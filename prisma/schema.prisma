@@ -46,15 +46,59 @@ model password_resets {
   @@ignore
 }
 
-model users {
+model profile {
   id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  user           users @relation(fields: [userId], references: [id])
+  userId         Int
   company_id     Int?
-  name           String
-  email          String    @unique
-  password       String
   account_type   String    @default("subscriber")
   profile_photo  String?
-  remember_token String?   @db.VarChar(100)
-  created_at     DateTime? @db.Timestamp(0)
-  updated_at     DateTime? @db.Timestamp(0)
+}
+
+model accounts {
+  id                   Int       @id @default(autoincrement())
+  compound_id          String    @unique @db.VarChar(255)
+  user_id              Int
+  provider_type        String    @db.VarChar(255)
+  provider_id          String    @db.VarChar(255)
+  provider_account_id  String    @db.VarChar(255)
+  refresh_token        String?   @db.Text
+  access_token         String?   @db.Text
+  access_token_expires DateTime? @db.Timestamp(6)
+  created_at           DateTime  @default(now()) @db.Timestamp(6)
+  updated_at           DateTime  @default(now()) @db.Timestamp(6)
+
+  @@index([provider_account_id], name: "provider_account_id")
+  @@index([provider_id], name: "provider_id")
+  @@index([user_id], name: "user_id")
+}
+
+model sessions {
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  expires       DateTime @db.Timestamp(6)
+  session_token String   @unique @db.VarChar(255)
+  access_token  String   @unique @db.VarChar(255)
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+  updated_at    DateTime @default(now()) @db.Timestamp(6)
+}
+
+model users {
+  id             Int       @id @default(autoincrement())
+  profile        profile?
+  name           String?   @db.VarChar(255)
+  email          String?   @unique @db.VarChar(255)
+  email_verified DateTime? @db.Timestamp(6)
+  image          String?   @db.VarChar(255)
+  created_at     DateTime  @default(now()) @db.Timestamp(6)
+  updated_at     DateTime  @default(now()) @db.Timestamp(6)
+}
+
+model verification_requests {
+  id         Int      @id @default(autoincrement())
+  identifier String   @db.VarChar(255)
+  token      String   @unique @db.VarChar(255)
+  expires    DateTime @db.Timestamp(6)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
 }
