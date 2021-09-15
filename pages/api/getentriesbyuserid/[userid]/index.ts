@@ -11,7 +11,10 @@ export default async function handle(req, res) {
       id: parseInt(userid),
     },
     include: {
+      company: true,
       profile: true,
+      entries: true,
+      
     },
   })
   res.json(getUser)
